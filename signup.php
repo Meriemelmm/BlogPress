@@ -1,19 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style> 
-    * {
+    <style>* {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-      body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f4f4f4;
+    
+    /* Style du body */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
     }
     
     .container {
@@ -22,7 +44,7 @@
     }
     
     header {
-        background-color: #333;
+        background-color: #121125;
         color: white;
         padding: 20px 0;
     }
@@ -47,13 +69,13 @@
         color: white;
         text-decoration: none;
     }
-    main {
+      
+        /* Style du main */
+        main {
             display: flex;
             justify-content: center;
             align-items: center;
-            justify-items: center;
             height: 80vh;
-          
         }
         
         .form-container {
@@ -97,7 +119,7 @@
         button {
             width: 100%;
             padding: 12px;
-            background-color: #333;
+            background-color:#121125;
             color: white;
             font-size: 16px;
             border: none;
@@ -108,17 +130,6 @@
         
         button:hover {
             background-color: #f39c12;
-        }
-        
-        /* Style du footer */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }</style>
 </head>
 <body>
@@ -127,28 +138,31 @@
             <h1>BlogPress</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="signup.html">Inscription</a></li>
+                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="login.php">Connexion</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-
     <main>
         <section class="form-container">
-            <h2>Connexion</h2>
-            <form action="login.php" method="POST">
+            <h2>Inscription</h2>
+            <form action="signup.php" method="POS'T">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" name="username">
+                    <input type="text" id="username" name="username" >
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
                 </div>
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password">
+                    <input type="password" id="password" name="password" >
                 </div>
-                <button type="submit">Se connecter</button>
+                <button type="submit">S'inscrire</button>
             </form>
         </section>
-    </main> 
+    </main>
 </body>
 </html>

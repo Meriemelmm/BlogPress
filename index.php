@@ -22,7 +22,7 @@
     }
     
     header {
-        background-color: #333;
+        background-color: #121125;
         color: white;
         padding: 20px 0;
     }
@@ -98,14 +98,14 @@
             display: inline-block;
             margin-top: 10px;
             padding: 8px 16px;
-            background-color: #333;
+            background-color: #121125;
             color: white;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
         
         .read-more:hover {
-            background-color: #444;
+            background-color:#121125;
         }</style>
 </head>
 <body>
@@ -114,9 +114,9 @@
             <h1>BlogPress</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="login.html">Connexion</a></li>
-                    <li><a href="signup.html">Inscription</a></li>
+                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="login.php">Connexion</a></li>
+                    <li><a href="signup.php">Inscription</a></li>
                 </ul>
             </nav>
         </div>
