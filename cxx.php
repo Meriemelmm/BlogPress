@@ -1,194 +1,82 @@
 <?php
- $username="";
- $email="";
- $password="";
- $erreurs = [
+// Initialisation des variables
+$username = "";
+$email = "";
+$password = "";
+$erreurs = [
     "username" => "",
     "email" => "",
     "password" => ""
 ];
 
-
- print_r($erreurs);
-    
-
+// Connexion à la base de données
 $connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
 if (!$connect) {
-    echo 'Connection error: ' . mysqli_connect_error();
-} else { 
-    echo 'hellodddddddddddddddd';
+    die('Connection error: ' . mysqli_connect_error());
 }
-  //  htmlspecialchars():
-  //explode ; string to array with splite somthing comme ,
-// :   endforeach;
-// :  endif;
-//  saving data to database :
- 
-  
- 
-$isAlpha=true;
-   
-  
-if (isset($_POST['submit'])) { 
 
-    // Affiche l'email soumis
-    echo "Formulaire soumis. L'email est : ";
-    echo htmlspecialchars($_POST['email']);
-    echo htmlspecialchars($_POST['username']);
-    echo htmlspecialchars($_POST['password']);
-    if(empty($_POST['email'])){
-        echo" it's vide bro";
-    }
-    else{
-        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-          
-            $erreurs['username']=" invalid";;
-        } else {
-            echo " Email valide.";
-            $email=$_POST['email'];
-        }
+// Vérification de la soumission du formulaire
+if (isset($_POST['submit'])) {
+    // Validation et traitement des données
 
-    }
-
-
-   if(empty($_POST['username'])){
-     echo" userame is vide ";
-   }
-   else{
-    for ($i = 0; $i < strlen($_POST['username']); $i++) {
-    
-        if (!(($_POST['username'][$i] >= 'a' && $_POST['username'][$i] <= 'z') || ($_POST['username'][$i] >= 'A' && $_POST['username'][$i] <= 'Z'))) {
-            
-            $isAlpha = false;
-            break;  
-        }
-    }
-
-  
-    if ($isAlpha) {
-        echo " alphabet"; 
-        $username=$_POST['username'] ;
+    // Validation de l'email
+    if (empty($_POST['email'])) {
+        $erreurs['email'] = "L'email est requis.";
+    } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $erreurs['email'] = "Email invalide.";
     } else {
-       
-        $erreurs['email']=" not alphabet";
-
+        $email = mysqli_real_escape_string($connect, $_POST['email']);
     }
-   
-   }
 
- if(empty($_POST['password'])){
-    echo"yakhwa";
- }
- else{
-    if(strlen($_POST['password'])<8){
-     $erreurs['password'] = 'bbbbbbbbbbbbbki wlo ';
+    // Validation du nom d'utilisateur
+    if (empty($_POST['username'])) {
+        $erreurs['username'] = "Le nom d'utilisateur est requis.";
+    } else {
+        $username = $_POST['username'];
+        $isAlpha = true;
+        for ($i = 0; $i < strlen($username); $i++) {
+            if (!(($username[$i] >= 'a' && $username[$i] <= 'z') || ($username[$i] >= 'A' && $username[$i] <= 'Z'))) {
+                $isAlpha = false;
+                break;
+            }
+        }
 
-
+        if (!$isAlpha) {
+            $erreurs['username'] = "Le nom d'utilisateur doit contenir uniquement des lettres.";
+        } else {
+            $username = mysqli_real_escape_string($connect, $username);
+        }
     }
-    else {
-        echo" amo _sen" ;
-        $password=$_POST['password'];
+
+    // Validation du mot de passe
+    if (empty($_POST['password'])) {
+        $erreurs['password'] = "Le mot de passe est requis.";
+    } elseif (strlen($_POST['password']) < 8) {
+        $erreurs['password'] = "Le mot de passe doit comporter au moins 8 caractères.";
+    } else {
+        $password = mysqli_real_escape_string($connect, $_POST['password']);
     }
-  
- }
 
+    // Si aucune erreur n'est trouvée, on insère les données dans la base de données
+    if (empty($erreurs['username']) && empty($erreurs['email']) && empty($erreurs['password'])) {
+        $sql = "INSERT INTO name_table (username, email, password) VALUES ('$username', '$email', '$password')";
 
- 
- // Initialiser un indicateur pour savoir s'il y a des erreurs
- $erreursTrouvees = false;
- 
-//  // Vérifier chaque erreur dans le tableau
- foreach($erreurs as $erreur) {
-     if($erreur != "") {  // Si l'erreur n'est pas vide
-         $erreursTrouvees = true;
-         break;  // On arrête la boucle dès qu'on trouve une erreur
-     }
- }
- 
-//  // Afficher le message une seule fois après avoir vérifié tout le tableau
- if($erreursTrouvees) {
-     echo "Il y a des erreurs.";
- } else {
-     echo "Aucune erreur."; 
-    
- }
-
- 
+        // Exécution de la requête et vérification du succès
+        if (mysqli_query($connect, $sql)) {
+            echo "L'utilisateur a été ajouté avec succès.";
+        } else {
+            echo "Erreur : " . mysqli_error($connect);
+        }
+    }
 }
-
-
-// $email=mysqli_real_escape_string($connect,$_POST['email']);
-// $password=mysqli_real_escape_string($connect,$_POST['password']);
-// $username=mysqli_real_escape_string($connect,$_POST['username']);
-// $sql="INSERT INTO name_table( username, email,password) VALUES ($username,$email,$password) ";
-// // save and check 
-
-
-
-//  if(mysqli_query($connect,$sql) ){
-//     // succes
-//  }
-//  else{
-//     echo'erreur'. mysqli_error($connect);
-//  }
-
-
- ?>
-    
-   
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inscription</title>
     <style>* {
         margin: 0;
         padding: 0;
@@ -297,44 +185,39 @@ if (isset($_POST['submit'])) {
         }</style>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container">
             <h1>BlogPress</h1>
             <nav>
                 <ul>
                     <li><a href="index.php">Accueil</a></li>
                     <li><a href="login.php">Connexion</a></li>
-                    <li><a href="cxx.php">Connexioneeeeeee</a></li>
-
                 </ul>
             </nav>
         </div>
-    </header>
+    </header> -->
     <main>
         <section class="form-container">
             <h2>Inscription</h2>
             <form action="signup.php" method="POST">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" name="username" value="<?php echo $username  ?>" >
-                    <div class="erreur" style="color:red"><?php  echo $erreurs['username']?></div>
+                    <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>">
+                    <div class="erreur" style="color:red"><?php echo $erreurs['username']; ?></div>
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
-                    <input id="email" name="email" value="<?php   echo $email?>">
-                    <div class="erreur" style=" color:red"><?php  echo $erreurs['email']?></div>
+                    <input type="text" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
+                    <div class="erreur" style="color:red"><?php echo $erreurs['email']; ?></div>
                 </div>
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" value="<?php echo $password?>" >
-                    <div class="erreur" style="color:red"><?php echo $erreurs['password']?></div>
+                    <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($password); ?>">
+                    <div class="erreur" style="color:red"><?php echo $erreurs['password']; ?></div>
                 </div>
                 <button type="submit" name="submit">S'inscrire</button>
             </form>
         </section>
     </main>
-
-
-
 </body>
 </html>
