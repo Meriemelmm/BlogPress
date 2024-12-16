@@ -1,14 +1,99 @@
 <?php
+ $username="";
+ $email="";
+ $password="";
+ $erreurs=[
+   "username"=>"","email"=>"","password"=>""];
 
+
+ print_r($erreurs);
     
 // connect to database
-$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
-if (!$connect) {
-    echo 'Connection error: ' . mysqli_connect_error();
-} else { 
-    echo 'hellodddddddddddddddd';
+// $connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
+// if (!$connect) {
+//     echo 'Connection error: ' . mysqli_connect_error();
+// } else { 
+//     echo 'hellodddddddddddddddd';
+// }
+  //  htmlspecialchars():
+  //explode ; string to array with splite somthing comme ,
+// :   endforeach;
+// :  endif;
+//  saving data to database :
+ 
+  
+ 
+$isAlpha=true;
+   
+  
+if (isset($_POST['submit'])) { 
+
+    // Affiche l'email soumis
+    echo "Formulaire soumis. L'email est : ";
+    echo htmlspecialchars($_POST['email']);
+    echo htmlspecialchars($_POST['username']);
+    echo htmlspecialchars($_POST['password']);
+    if(empty($_POST['email'])){
+        echo" it's vide bro";
+    }
+    else{
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            echo " invalid";
+        } else {
+            echo " Email valide.";
+            $email=$_POST['email'];
+        }
+
+    }
+
+
+   if(empty($_POST['username'])){
+     echo" userame is vide ";
+   }
+   else{
+    for ($i = 0; $i < strlen($_POST['username']); $i++) {
+    
+        if (!(($_POST['username'][$i] >= 'a' && $_POST['username'][$i] <= 'z') || ($_POST['username'][$i] >= 'A' && $_POST['username'][$i] <= 'Z'))) {
+            
+            $isAlpha = false;
+            break;  
+        }
+    }
+
+  
+    if ($isAlpha) {
+        echo " alphabet"; 
+        $username=$_POST['username'] ;
+    } else {
+        echo " not alphabet"; 
+    }
+   
+   }
+
+ if(empty($_POST['password'])){
+    
+ }
+ else{
+    if(strlen($_POST['password'])<8){
+      $erreurs['password'] = 'ki wlo ';
+
+    }
+    else {
+        echo" amo _sen" ;
+        $password=$_POST['password'];
+    }
+  
+ }
 }
-//  htmlspecialchars():
+?>
+
+    
+   
+
+
+
+
+
 
 
 
@@ -30,7 +115,7 @@ if (!$connect) {
 
 
 
-?>
+
 
 
 
@@ -165,7 +250,7 @@ if (!$connect) {
         }</style>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container">
             <h1>BlogPress</h1>
             <nav>
@@ -175,26 +260,32 @@ if (!$connect) {
                 </ul>
             </nav>
         </div>
-    </header>
+    </header> -->
     <main>
         <section class="form-container">
             <h2>Inscription</h2>
-            <form action="signup.php" method="POS'T">
+            <form action="signup.php" method="POST">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
-                    <input type="text" id="username" name="username" >
+                    <input type="text" id="username" name="username" value="<?php   echo $username  ?>" >
+                    <div class="erreur" style="color:red"><?php   echo $erreurs['username']?></div>
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
-                    <input id="email" name="email">
+                    <input id="email" name="email" value="<?php   echo $email?>">
+                    <div class="erreur" style=" color:red"><?php   echo $erreurs['email']?></div>
                 </div>
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" >
+                    <input type="password" id="password" name="password" value="<?php echo $password?>" >
+                    <div class="erreur" style="color:red"><?php   echo $erreurs['password']?></div>
                 </div>
                 <button type="submit" name="submit">S'inscrire</button>
             </form>
         </section>
     </main>
+
+
+
 </body>
 </html>

@@ -1,3 +1,27 @@
+<?php
+
+$stringest = "meriem";     
+$isAlpha = true;       
+
+for ($i = 0; $i < strlen($stringest); $i++) {
+         
+    if (($stringest[$i] < 'a' || $stringest[$i] > 'z')&&($stringest[$i] < 'A' || $stringest[$i] > 'z')) {
+            
+        $isAlpha = false;
+        break; 
+               
+    }
+}
+
+if ($isAlpha) {
+    echo "nice"; 
+} else {
+    echo "not nice";  
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
