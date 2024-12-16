@@ -1,4 +1,36 @@
+<?php
 
+    
+// connect to database
+$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
+if (!$connect) {
+    echo 'Connection error: ' . mysqli_connect_error();
+} else { 
+    echo 'hellodddddddddddddddd';
+}
+//  htmlspecialchars():
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
 
 
 
@@ -154,13 +186,13 @@
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
+                    <input id="email" name="email">
                 </div>
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" >
                 </div>
-                <button type="submit">S'inscrire</button>
+                <button type="submit" name="submit">S'inscrire</button>
             </form>
         </section>
     </main>
