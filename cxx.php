@@ -10,7 +10,7 @@ $erreurs = [
 ];
 
 // Connexion à la base de données
-$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
+$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blog');
 if (!$connect) {
     die('Connection error: ' . mysqli_connect_error());
 }
@@ -53,13 +53,13 @@ if (isset($_POST['submit'])) {
         $erreurs['password'] = "Le mot de passe est requis.";
     } elseif (strlen($_POST['password']) < 8) {
         $erreurs['password'] = "Le mot de passe doit comporter au moins 8 caractères.";
-    } else {
+    } else { 
         $password = mysqli_real_escape_string($connect, $_POST['password']);
     }
 
     // Si aucune erreur n'est trouvée, on insère les données dans la base de données
     if (empty($erreurs['username']) && empty($erreurs['email']) && empty($erreurs['password'])) {
-        $sql = "INSERT INTO name_table (username, email, password) VALUES ('$username', '$email', '$password')";
+        $sql = "INSERT INTO utilisateurs ( username, email,password) VALUES ('$username', '$email','$password')";
 
         // Exécution de la requête et vérification du succès
         if (mysqli_query($connect, $sql)) {
@@ -68,7 +68,9 @@ if (isset($_POST['submit'])) {
             echo "Erreur : " . mysqli_error($connect);
         }
     }
+ 
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -199,7 +201,7 @@ if (isset($_POST['submit'])) {
     <main>
         <section class="form-container">
             <h2>Inscription</h2>
-            <form action="signup.php" method="POST">
+            <form action="cxx.php" method="POST">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
                     <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>">
