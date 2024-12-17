@@ -57,11 +57,11 @@ if (isset($_POST['submit'])) {
         $password = mysqli_real_escape_string($connect, $_POST['password']);
     }
 
-    // Si aucune erreur n'est trouvée, on insère les données dans la base de données
+   
     if (empty($erreurs['username']) && empty($erreurs['email']) && empty($erreurs['password'])) {
         $sql = "INSERT INTO utilisateurs ( username, email,password) VALUES ('$username', '$email','$password')";
 
-        // Exécution de la requête et vérification du succès
+      
         if (mysqli_query($connect, $sql)) {
             echo "L'utilisateur a été ajouté avec succès.";
         } else {
@@ -187,7 +187,7 @@ if (isset($_POST['submit'])) {
         }</style>
 </head>
 <body>
-    <!-- <header>
+    <header>
         <div class="container">
             <h1>BlogPress</h1>
             <nav>
@@ -197,7 +197,7 @@ if (isset($_POST['submit'])) {
                 </ul>
             </nav>
         </div>
-    </header> -->
+    </header>
     <main>
         <section class="form-container">
             <h2>Inscription</h2>

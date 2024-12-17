@@ -1,23 +1,68 @@
 <?php
+include 'confg.php';
+ if(isset($_POST['connecter'])){
+                 
 
-$stringest = "meriem";     
-$isAlpha = true;       
+ echo" helo";
+ $sql='SELECT id, username,email,password FROM utilisateurs';
+//  make query and get result 
 
-for ($i = 0; $i < strlen($stringest); $i++) {
-         
-    if (($stringest[$i] < 'a' || $stringest[$i] > 'z')&&($stringest[$i] < 'A' || $stringest[$i] > 'z')) {
-            
-        $isAlpha = false;
-        break; 
-               
-    }
+$result=mysqli_query($connect,$sql);
+//  fetch the reulting ro as array
+ $utilisateurs=mysqli_fetch_all ($result,MYSQLI_ASSOC);
+ 
+ 
+ 
+ print_r($utilisateurs);
+ 
+  
+  
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
-if ($isAlpha) {
-    echo "nice"; 
-} else {
-    echo "not nice";  
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ?>
@@ -170,7 +215,7 @@ if ($isAlpha) {
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password">
                 </div>
-                <button type="submit">Se connecter</button>
+                <button type="submit" name="connecter">Se connecter</button>
             </form>
         </section>
     </main> 
