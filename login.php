@@ -1,5 +1,11 @@
 <?php
 include 'confg.php';
+//  table erreurs :
+$erreurs=[
+    "username"=>"","password"=>""
+];
+print_r($erreurs);
+
  if(isset($_POST['connecter'])){
                  
 
@@ -13,7 +19,65 @@ $result=mysqli_query($connect,$sql);
  
  
  
- print_r($utilisateurs);
+ print_r($utilisateurs); 
+ $utilisateur_trouve = false;
+
+
+$username_post =  mysqli_real_escape_string($connect,$_POST['username']);
+$password_post =  mysqli_real_escape_string($connect, $_POST['password']);
+
+foreach ($utilisateurs as $user) {
+    
+
+    if ($user['username'] === $username_post)
+            { echo"hello";
+                $utilisateur_trouve =true;
+       
+         if ($password_post=== $user['password']) {
+           
+           echo "Connexion réussie !"; 
+           $utilisateur_trouve =true;
+           header("location:index.php");
+           exit();
+           break;
+        }
+        else{
+            $erreurs['password'] =" invqlid";
+            $utilisateur_trouve =true;
+           
+            break;
+       
+        }
+      
+          
+       }  
+       if( !$utilisateur_trouve ){
+        $erreurs['username']="n existe pas le username";
+       }
+ 
+
+
+       
+     }}
+
+
+
+
+
+
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+ 
+
  
   
   
@@ -47,7 +111,7 @@ $result=mysqli_query($connect,$sql);
 
 
 
-}
+
 
 
 
@@ -210,10 +274,12 @@ $result=mysqli_query($connect,$sql);
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
                     <input type="text" id="username" name="username">
+                <div class="erruer" style="color:red"> <?php echo ($erreurs['username']) ?></div>
                 </div>
                 <div class="input-group">
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password">
+                    <div class="erreur" style="color:red"> <?php echo$erreurs['password']?></div>
                 </div>
                 <button type="submit" name="connecter">Se connecter</button>
             </form>
