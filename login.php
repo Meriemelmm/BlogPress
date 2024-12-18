@@ -35,11 +35,21 @@ foreach ($utilisateurs as $user) {
        
          if ($password_post=== $user['password']) {
            
-           echo "Connexion réussie !"; 
+           echo "  Connexion réussie !"; 
            $utilisateur_trouve =true;
-           header("location:index.php");
-           exit();
            break;
+        //    if ($user['role'] === "auteur") {
+        //    echo"hy auteur";
+        //     break;
+          
+        // } else {
+        //     echo" hi visiteur";
+        //     break;
+            
+        // }   
+         
+          
+          
         }
         else{
             $erreurs['password'] =" invqlid";
@@ -270,7 +280,7 @@ foreach ($utilisateurs as $user) {
     <main>
         <section class="form-container">
             <h2>Connexion</h2>
-            <form action="login.php" method="POST">
+            <form action="" method="POST">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
                     <input type="text" id="username" name="username">
