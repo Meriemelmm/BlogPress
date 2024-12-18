@@ -1,186 +1,107 @@
 <?php
- $username="";
- $email="";
- $password="";
- $erreurs = [
+
+$username = "";
+$email = "";
+$password = "";
+$erreurs = [
     "username" => "",
     "email" => "",
     "password" => ""
 ];
 
+$role = "visiteur";
+echo $role;
 
- print_r($erreurs);
-    
-
-$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
+$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blog');
 if (!$connect) {
-    echo 'Connection error: ' . mysqli_connect_error();
-} else { 
-    echo 'hellodddddddddddddddd';
+    echo('Connection error: ' . mysqli_connect_error());
 }
-  //  htmlspecialchars():
-  //explode ; string to array with splite somthing comme ,
-// :   endforeach;
-// :  endif;
-//  saving data to database :
- 
-  
- 
-$isAlpha=true;
+
+
+if (isset($_POST['submit'])) {
    
-  
-if (isset($_POST['submit'])) { 
 
-    // Affiche l'email soumis
-    echo "Formulaire soumis. L'email est : ";
-    echo htmlspecialchars($_POST['email']);
-    echo htmlspecialchars($_POST['username']);
-    echo htmlspecialchars($_POST['password']);
-    if(empty($_POST['email'])){
-        echo" it's vide bro";
-    }
-    else{
-        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-          
-            $erreurs['username']=" invalid";;
-        } else {
-            echo " Email valide.";
-            $email=$_POST['email'];
-        }
-
-    }
-
-
-   if(empty($_POST['username'])){
-     echo" userame is vide ";
-   }
-   else{
-    for ($i = 0; $i < strlen($_POST['username']); $i++) {
-    
-        if (!(($_POST['username'][$i] >= 'a' && $_POST['username'][$i] <= 'z') || ($_POST['username'][$i] >= 'A' && $_POST['username'][$i] <= 'Z'))) {
-            
-            $isAlpha = false;
-            break;  
-        }
-    }
-
-  
-    if ($isAlpha) {
-        echo " alphabet"; 
-        $username=$_POST['username'] ;
+    // Validation de l'email
+    if (empty($_POST['email'])) {
+        $erreurs['email'] = "L'email est requis.";
+    } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $erreurs['email'] = "Email invalide.";
     } else {
-       
-        $erreurs['email']=" not alphabet";
-
+        $email = mysqli_real_escape_string($connect, $_POST['email']);
     }
-   
-   }
 
- if(empty($_POST['password'])){
-    echo"yakhwa";
- }
- else{
-    if(strlen($_POST['password'])<8){
-     $erreurs['password'] = 'bbbbbbbbbbbbbki wlo ';
+    // Validation du nom d'utilisateur
+    if (empty($_POST['username'])) {
+        $erreurs['username'] = "Le nom d'utilisateur est requis.";
+    } else {
+        $username = $_POST['username'];
+        $isAlpha = true;
+        for ($i = 0; $i < strlen($username); $i++) {
+            if (!(($username[$i] >= 'a' && $username[$i] <= 'z') || ($username[$i] >= 'A' && $username[$i] <= 'Z'))) {
+                $isAlpha = false;
+                break;
+            }
+        }
 
-
+        if (!$isAlpha) {
+            $erreurs['username'] = "Le nom d'utilisateur doit contenir uniquement des lettres.";
+        } else {
+            $username = mysqli_real_escape_string($connect, $username);
+        }
     }
-    else {
-        echo" amo _sen" ;
-        $password=$_POST['password'];
+
+    // Validation du mot de passe
+    if (empty($_POST['password'])) {
+        $erreurs['password'] = "Le mot de passe est requis.";
+    } else {
+        $password = $_POST['password'];
+
+        // Vérifier la longueur du mot de passe
+        if (strlen($password) < 8) {
+            $erreurs['password'] = "Le mot de passe doit comporter au moins 8 caractères.";
+        }
+        // Vérification des critères de sécurité du mot de passe
+        elseif (!preg_match("#[0-9]+#", $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins un chiffre.";
+        }
+        elseif (!preg_match("#[a-z]+#", $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins une lettre minuscule.";
+        }
+        elseif (!preg_match("#[A-Z]+#", $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins une lettre majuscule.";
+        }
     }
-  
- }
 
+    // Validation du rôle
+    if (isset($_POST['role']) && ($_POST['role'] == "auteur" || $_POST['role'] == "visiteur")) {
+        $role = mysqli_real_escape_string($connect, $_POST['role']);
+    }
 
- 
- // Initialiser un indicateur pour savoir s'il y a des erreurs
- $erreursTrouvees = false;
- 
-//  // Vérifier chaque erreur dans le tableau
- foreach($erreurs as $erreur) {
-     if($erreur != "") {  // Si l'erreur n'est pas vide
-         $erreursTrouvees = true;
-         break;  // On arrête la boucle dès qu'on trouve une erreur
-     }
- }
- 
-//  // Afficher le message une seule fois après avoir vérifié tout le tableau
- if($erreursTrouvees) {
-     echo "Il y a des erreurs.";
- } else {
-     echo "Aucune erreur."; 
-    
- }
+    // Si toutes les validations sont passées, enregistrer dans la base de données
+    if (empty($erreurs['username']) && empty($erreurs['email']) && empty($erreurs['password'])) {
+        // Hachage du mot de passe après validation
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
- 
+        // Préparation de la requête SQL
+        $sql = "INSERT INTO utilisateurs (username, email, password, role) VALUES ('$username', '$email', '$hashed_password', '$role')";
+
+        // Exécution de la requête
+        if (mysqli_query($connect, $sql)) {
+            echo "L'utilisateur a été ajouté avec succès.";
+        } else {
+            echo "Erreur : " . mysqli_error($connect);
+        }
+    }
 }
-
-
-// $email=mysqli_real_escape_string($connect,$_POST['email']);
-// $password=mysqli_real_escape_string($connect,$_POST['password']);
-// $username=mysqli_real_escape_string($connect,$_POST['username']);
-// $sql="INSERT INTO name_table( username, email,password) VALUES ($username,$email,$password) ";
-// // save and check 
-
-
-
-//  if(mysqli_query($connect,$sql) ){
-//     // succes
-//  }
-//  else{
-//     echo'erreur'. mysqli_error($connect);
-//  }
-
-
- ?>
-    
-   
-
-
-
-
-
-
-
-
-
+?>
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- CREATE TABLE utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    role varchar(50)
+); -->
 
 
 <!DOCTYPE html>
@@ -329,6 +250,14 @@ if (isset($_POST['submit'])) {
                     <input type="password" id="password" name="password" value="<?php echo $password?>" >
                     <div class="erreur" style="color:red"><?php echo $erreurs['password']?></div>
                 </div>
+                <div class="input-group">
+                    <label for="password">role</label>
+                    <input type="text" id="role" name="role" >
+
+                    
+
+                  
+                </div>
                 <button type="submit" name="submit">S'inscrire</button>
             </form>
         </section>
@@ -338,3 +267,4 @@ if (isset($_POST['submit'])) {
 
 </body>
 </html>
+

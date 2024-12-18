@@ -1,145 +1,56 @@
 <?php
 include 'confg.php';
-//  table erreurs :
-$erreurs=[
-    "username"=>"","password"=>""
+
+// Table erreurs :
+$erreurs = [
+    "username" => "",
+    "password" => "",
+    "role" => ""
 ];
-print_r($erreurs);
 
- if(isset($_POST['connecter'])){
-                 
+if (isset($_POST['connecter'])) {
 
- echo" helo";
- $sql='SELECT id, username,email,password FROM utilisateurs';
-//  make query and get result 
-
-$result=mysqli_query($connect,$sql);
-//  fetch the reulting ro as array
- $utilisateurs=mysqli_fetch_all ($result,MYSQLI_ASSOC);
- 
- 
- 
- print_r($utilisateurs); 
- $utilisateur_trouve = false;
-
-
-$username_post =  mysqli_real_escape_string($connect,$_POST['username']);
-$password_post =  mysqli_real_escape_string($connect, $_POST['password']);
-
-foreach ($utilisateurs as $user) {
     
+    $sql = 'SELECT id, username, email, password, role FROM utilisateurs';
+    $result = mysqli_query($connect, $sql);
 
-    if ($user['username'] === $username_post)
-            { echo"hello";
-                $utilisateur_trouve =true;
-       
-         if ($password_post=== $user['password']) {
-           
-           echo "  Connexion réussie !"; 
-           $utilisateur_trouve =true;
-           break;
-        //    if ($user['role'] === "auteur") {
-        //    echo"hy auteur";
-        //     break;
-          
-        // } else {
-        //     echo" hi visiteur";
-        //     break;
-            
-        // }   
-         
-          
-          
+    $utilisateurs = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $utilisateur_trouve = false; 
+    $username_post = mysqli_real_escape_string($connect, $_POST['username']);
+    $password_post = mysqli_real_escape_string($connect, $_POST['password']);
+
+    foreach ($utilisateurs as $user) {
+        if ($user['username'] === $username_post) {
+            $utilisateur_trouve = true; 
+
+            if (password_verify($password_post, $user['password'])) {
+                // Vérification du rôle
+                if ($user['role'] === "auteur") {
+                    // Redirection vers signup.php
+                    header("Location: dash.php");
+                    exit(); // Arrête l'exécution du script après redirection
+                } else {
+                    // Si l'utilisateur n'a pas le rôle d'auteur
+                    $erreurs['role'] = "Vous n'avez pas le rôle d'auteur.";
+                }
+                break;
+            } else {
+                // Mot de passe invalide
+                $erreurs['password'] = "Mot de passe invalide";
+                break;
+            }
         }
-        else{
-            $erreurs['password'] =" invqlid";
-            $utilisateur_trouve =true;
-           
-            break;
-       
-        }
-      
-          
-       }  
-       if( !$utilisateur_trouve ){
-        $erreurs['username']="n existe pas le username";
-       }
- 
+    }
 
-
-       
-     }}
-
-
-
-
-
-
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
- 
-
- 
-  
-  
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Si le nom d'utilisateur n'a pas été trouvé
+    if (!$utilisateur_trouve) {
+        $erreurs['username'] = "Le nom d'utilisateur n'existe pas";
+    }
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">

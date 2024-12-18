@@ -12,6 +12,7 @@ $erreurs = [
 $role="visiteur";
 echo $role;
 
+
 // Connexion à la base de données
 $connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blog');
 if (!$connect) {
@@ -68,7 +69,6 @@ if (isset($_POST['submit'])) {
     elseif(preg_match("#[a-z]+ #",$_POST['password'])){
         $erreurs['password'] ="<br/>  at least onchar ";
 
-        $password = mysqli_real_escape_string($connect, $_POST['password']);
                       
     }
     elseif(preg_match("#[A-Z]+ #",$_POST['password'])){
