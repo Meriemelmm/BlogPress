@@ -9,10 +9,13 @@ $erreurs = [
     "password" => ""
 ];
 
+$role="visiteur";
+echo $role;
+
 // Connexion à la base de données
 $connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blog');
 if (!$connect) {
-    die('Connection error: ' . mysqli_connect_error());
+    echo('Connection error: ' . mysqli_connect_error());
 }
 
 // Vérification de la soumission du formulaire
@@ -51,15 +54,48 @@ if (isset($_POST['submit'])) {
     // Validation du mot de passe
     if (empty($_POST['password'])) {
         $erreurs['password'] = "Le mot de passe est requis.";
-    } elseif (strlen($_POST['password']) < 8) {
-        $erreurs['password'] = "Le mot de passe doit comporter au moins 8 caractères.";
-    } else { 
-        $password = mysqli_real_escape_string($connect, $_POST['password']);
     }
+     else{ 
+        if (strlen($_POST['password']) <= 8) {
+        $erreurs['password'] = "Le mot de passe doit comporter au moins 8 caractères.";
+    } 
+    elseif(preg_match("#[0-9]+ #",$_POST['password'])){
+        $erreurs['password'] ="<br/>  at least one digits ";
+
+      
+                      
+    }
+    elseif(preg_match("#[a-z]+ #",$_POST['password'])){
+        $erreurs['password'] ="<br/>  at least onchar ";
+
+        $password = mysqli_real_escape_string($connect, $_POST['password']);
+                      
+    }
+    elseif(preg_match("#[A-Z]+ #",$_POST['password'])){
+        $erreurs['password'] ="<br/>  at least one OUPPER ";
+
+        
+                    
+    }
+    else{ $password = mysqli_real_escape_string($connect, $_POST['password']); }
+//  vaalidated rolessss;
+
+
+
+
+if($_POST['role']=== "auteur"){
+    $role=mysqli_real_escape_string($connect, "auteur");}
+    else{
+
+
+        $role=mysqli_real_escape_string($connect,"visiteur");
+    }
+
+
 
    
     if (empty($erreurs['username']) && empty($erreurs['email']) && empty($erreurs['password'])) {
-        $sql = "INSERT INTO utilisateurs ( username, email,password) VALUES ('$username', '$email','$password')";
+        $sql = "INSERT INTO utilisateurs ( username, email,password,role) VALUES ('$username', '$email','$password','$role')";
 
       
         if (mysqli_query($connect, $sql)) {
@@ -69,6 +105,7 @@ if (isset($_POST['submit'])) {
         }
     }
  
+}
 }
 
 ?>
@@ -216,6 +253,14 @@ if (isset($_POST['submit'])) {
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($password); ?>">
                     <div class="erreur" style="color:red"><?php echo $erreurs['password']; ?></div>
+                </div>
+                <div class="input-group">
+                    <label for="password">role</label>
+                    <input type="text" id="role" name="role" >
+
+                    
+
+                  
                 </div>
                 <button type="submit" name="submit">S'inscrire</button>
             </form>
