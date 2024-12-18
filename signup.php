@@ -12,7 +12,7 @@ $erreurs = [
 $role = "visiteur";
 echo $role;
 
-$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blog');
+$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
 if (!$connect) {
     echo('Connection error: ' . mysqli_connect_error());
 }
@@ -225,7 +225,7 @@ if (isset($_POST['submit'])) {
                 <ul>
                     <li><a href="index.php">Accueil</a></li>
                     <li><a href="login.php">Connexion</a></li>
-                    <li><a href="cxx.php">Connexioneeeeeee</a></li>
+                  
 
                 </ul>
             </nav>
