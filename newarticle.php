@@ -1,5 +1,55 @@
 <?php
-echo " hello meriem"; ?>
+echo " hello meriem"; 
+
+
+$sql="insert into' nom de table'(name,email,mobile,password) values('$name','$email',$mobile','$password')";
+
+$result=mysqli_query($connect,$sql);
+if($result){
+    echo"data inserted succefly";
+    header('location:dash.php');
+
+}
+else{
+  echo 'Connection error: ' . mysqli_connect_error();
+}
+
+
+
+//  (div class container button)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +57,15 @@ echo " hello meriem"; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        .btnss{
+            background-color: #333;
+            display: flex;
+            flex-wrap: wrapp;
+            justify-content: center;
+            align-items:  center;
+            gap:30px;
+        }
+
     /* Ajouter du style pour que le formulaire s'affiche proprement */
     form {
         margin-top: 20px;
@@ -14,6 +73,7 @@ echo " hello meriem"; ?>
         background-color: #f9f9f9;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position:absolute;
     }
 
     input[type="text"], textarea {
@@ -195,7 +255,7 @@ main {
     background-color: #fff;
 }
 
-.article-management button {
+.btnss button {
     padding: 8px 16px;
     background-color: #3498db;
     color: white;
@@ -214,9 +274,11 @@ main {
 <body>
     
 
-<section class="article-management">
-    <h2>Gestion des Articles</h2>
-    <div>
+
+  
+    <div class="btnss">
+   <h2>Gestion des Articles</h2>
+    <div >
         <button class="btn" id="add">Ajouter un nouvel article</button>
 
         <!-- Formulaire caché par défaut -->
@@ -232,7 +294,47 @@ main {
 
             <input type="submit" value="Ajouter l'article">
         </form>
-    </div> 
+    </div>
+    <!-- modifier -->
+    <div >
+        <button class="btn" id="add">Ajouter un nouvel article</button>
+
+        <!-- Formulaire caché par défaut -->
+        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" required><br><br>
+
+            <label for="contenu">Contenu :</label>
+            <textarea id="contenu" name="contenu" required></textarea><br><br>
+
+            <label for="auteur">Auteur :</label>
+            <input type="text" id="auteur" name="auteur" required><br><br>
+
+            <input type="submit" value="Ajouter l'article">
+        </form>
+    </div>
+    <!-- returee -->
+    <div >
+        <button class="btn" id="add">Ajouter un nouvel article</button>
+
+        <!-- Formulaire caché par défaut -->
+        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" required><br><br>
+
+            <label for="contenu">Contenu :</label>
+            <textarea id="contenu" name="contenu" required></textarea><br><br>
+
+            <label for="auteur">Auteur :</label>
+            <input type="text" id="auteur" name="auteur" required><br><br>
+
+            <input type="submit" value="Ajouter l'article">
+        </form>
+    </div>
+   </div>
+    
+
+   
 
     <!-- Article Management Section -->
     <section class="article-management">
@@ -246,18 +348,40 @@ main {
                 <th>Vues</th>
                 <th>Commentaires</th>
                 <th>Likes</th>
+                <th>actions</th> 
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Cellule 1,1</td>
-                <td>Cellule 1,2</td>
-                <td>Cellule 1,3</td>
-                <td>Cellule 1,2</td>
-            </tr>
+            <?php
+          if($result){
+            while(  $utilisateurs = mysqli_fetch_all($result, MYSQLI_ASSOC)){
+ echo'   <tr>
+               <td> '.$id.'</td>
+                <td>'.$name.'</td>
+               <td>'.$mobile.'</td>
+             <td>Cellule 1,2</td>
+             <td>
+           <button><a href="">modifier</a></button>
+           <button><a href="">suprrimer</a></button>
+          </td>
+             </tr>';
+            }
+
+            }
+          
+
+        
+
+
+          
+            ?>
+            <button><a href="">modifier</a></button>
         </tbody>
     </table>
 </section>
+<div class="container">
+    <button><a href="ulien formule"> add users</a> </button>
+</div>
 
 <script>
     // Récupérer les éléments du DOM
@@ -267,8 +391,11 @@ main {
 
     // Ajouter l'événement au bouton "Ajouter"
     add.addEventListener('click', () => {
-        form.style.display = "block";  // Afficher le formulaire
-        table.style.display = "tra";  // Cacher le tableau
+
+        form.style.display = "block";
+        form.style.position="";
+          // Afficher le formulaire
+        table.style.opacity="0.6";  // Cacher le tableau
     });
 </script>
 

@@ -2,7 +2,14 @@
  
 <?php 
 
-    
+//     <!-- CREATE TABLE Articles (
+//     id INT AUTO_INCREMENT PRIMARY KEY,          -- ID unique de l'article, incrémenté automatiquement
+//     titre VARCHAR(255) NOT NULL,                 -- Titre de l'article, chaîne de caractères avec une longueur maximale de 255
+//     contenu TEXT NOT NULL,                       -- Contenu de l'article
+//     likes INT DEFAULT 0,                         -- Nombre de likes, valeur par défaut de 0
+//     views INT DEFAULT 0,                         -- Nombre de vues, valeur par défaut de 0
+//     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Date de création, avec la date et l'heure actuelles par défaut
+// ); -->
 
 ?>
 
@@ -272,12 +279,5 @@ main {
         table[0].style.display = "none";  // Cacher le tableau
     });
 </script>
-<!-- CREATE TABLE Articles (
-    id INT AUTO_INCREMENT PRIMARY KEY,          -- ID unique de l'article, incrémenté automatiquement
-    titre VARCHAR(255) NOT NULL,                 -- Titre de l'article, chaîne de caractères avec une longueur maximale de 255
-    contenu TEXT NOT NULL,                       -- Contenu de l'article
-    likes INT DEFAULT 0,                         -- Nombre de likes, valeur par défaut de 0
-    views INT DEFAULT 0,                         -- Nombre de vues, valeur par défaut de 0
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Date de création, avec la date et l'heure actuelles par défaut
-); -->
+
 

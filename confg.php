@@ -1,6 +1,6 @@
 <?php 
 // connect to database
-$connect = mysqli_connect('localhost', 'root', 'meriem04042003', 'blogpress');
+$connect = mysqli_connect('localhost', 'root', '', 'blogpress');
 if (!$connect) {
     echo 'Connection error: ' . mysqli_connect_error();
 } else { 
