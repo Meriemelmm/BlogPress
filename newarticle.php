@@ -1,40 +1,46 @@
-<!-- #region -->
- 
-<?php 
-
-    
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php
+echo " hello meriem"; ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BlogPress</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>/* styles.css */
-* {
+    <title>Document</title>
+    <style>
+    /* Ajouter du style pour que le formulaire s'affiche proprement */
+    form {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    input[type="submit"] {
+        background-color: #333;
+        color: white;
+        font-size: 16px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    input[type="submit"]:hover {
+        background-color:;
+       
+    }
+    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -201,32 +207,20 @@ main {
 .article-management button:hover {
     background-color: #2980b9;
 }
+
 </style>
+
 </head>
 <body>
-    <div class="dashboard">
-        <!-- HEADER -->
-        <header>
-            <div class="logo">
-                <h1>BlogPress</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Gestion des articles</a></li>
-                    <li><a href="#">Déconnexion</a></li>
-                </ul>
-            </nav>
-        </header>
+    
 
-       
-
-            <!-- Article Management Section -->
-            <section class="article-management">
+<section class="article-management">
     <h2>Gestion des Articles</h2>
     <div>
         <button class="btn" id="add">Ajouter un nouvel article</button>
-        <form action="ajouter_article.php" id="form" method="POST" style="display:none">
+
+        <!-- Formulaire caché par défaut -->
+        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
             <label for="titre">Titre :</label>
             <input type="text" id="titre" name="titre" required><br><br>
 
@@ -239,6 +233,11 @@ main {
             <input type="submit" value="Ajouter l'article">
         </form>
     </div> 
+
+    <!-- Article Management Section -->
+    <section class="article-management">
+    
+    
 
     <table>
         <thead>
@@ -264,20 +263,16 @@ main {
     // Récupérer les éléments du DOM
     const form = document.getElementById('form');
     const add = document.getElementById('add');
-    const table = document.getElementsByTagName('table'); // collection, donc on cible le premier avec table[0]
+    const table = document.getElementById('article-table');
 
     // Ajouter l'événement au bouton "Ajouter"
     add.addEventListener('click', () => {
         form.style.display = "block";  // Afficher le formulaire
-        table[0].style.display = "none";  // Cacher le tableau
+        table.style.display = "tra";  // Cacher le tableau
     });
 </script>
-<!-- CREATE TABLE Articles (
-    id INT AUTO_INCREMENT PRIMARY KEY,          -- ID unique de l'article, incrémenté automatiquement
-    titre VARCHAR(255) NOT NULL,                 -- Titre de l'article, chaîne de caractères avec une longueur maximale de 255
-    contenu TEXT NOT NULL,                       -- Contenu de l'article
-    likes INT DEFAULT 0,                         -- Nombre de likes, valeur par défaut de 0
-    views INT DEFAULT 0,                         -- Nombre de vues, valeur par défaut de 0
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Date de création, avec la date et l'heure actuelles par défaut
-); -->
 
+
+    
+</body>
+</html>
