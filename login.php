@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'confg.php';
 
 // Table erreurs :
@@ -15,12 +14,14 @@ $erreurs = [
 
 
 
-
+session_start();
 
 
 
 if (isset($_POST['connecter'])) {
 
+    $username_post = mysqli_real_escape_string($connect, $_POST['username']);
+    $password_post = mysqli_real_escape_string($connect, $_POST['password']);
     
     $sql = 'SELECT id, username, email, password, role FROM utilisateurs';
     $result = mysqli_query($connect, $sql);
@@ -28,8 +29,6 @@ if (isset($_POST['connecter'])) {
     $utilisateurs = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $utilisateur_trouve = false; 
-    $username_post = mysqli_real_escape_string($connect, $_POST['username']);
-    $password_post = mysqli_real_escape_string($connect, $_POST['password']);
 
     foreach ($utilisateurs as $user) {
         $user_id = $user['id']; 
@@ -37,15 +36,14 @@ if (isset($_POST['connecter'])) {
 
 
         if ($user['username'] === $username_post) {
-            $utilisateur_trouve = true; 
+            $utilisateur_trouve = true;
 
             if (password_verify($password_post, $user['password'])) {
                 // Vérification du rôle
                 if ($user['role'] === "auteur") {
-                   
+                    $_SESSION['id'] = $user_id;
                     // On génère l'URL avec l'ID de l'utilisateur
-                    header("Location: dash.php?id=" . $user_id);
-                     
+                    header("Location: newarticle.php?id=" . $_SESSION['id']);
                     exit(); 
                 } else {
                    
@@ -208,7 +206,7 @@ if (isset($_POST['connecter'])) {
     <main>
         <section class="form-container">
             <h2>Connexion</h2>
-            <form action="" method="POST">
+            <form action="login.php" method="POST">
                 <div class="input-group">
                     <label for="username">Nom d'utilisateur</label>
                     <input type="text" id="username" name="username">
