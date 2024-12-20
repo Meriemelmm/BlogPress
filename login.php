@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'confg.php';
 
 // Table erreurs :
@@ -7,6 +8,16 @@ $erreurs = [
     "password" => "",
     "role" => ""
 ];
+
+
+
+
+
+
+
+
+
+
 
 if (isset($_POST['connecter'])) {
 
@@ -21,29 +32,35 @@ if (isset($_POST['connecter'])) {
     $password_post = mysqli_real_escape_string($connect, $_POST['password']);
 
     foreach ($utilisateurs as $user) {
+        $user_id = $user['id']; 
+
+
+
         if ($user['username'] === $username_post) {
             $utilisateur_trouve = true; 
 
             if (password_verify($password_post, $user['password'])) {
                 // Vérification du rôle
                 if ($user['role'] === "auteur") {
-                    // Redirection vers signup.php
-                    header("Location: dash.php");
-                    exit(); // Arrête l'exécution du script après redirection
+                   
+                    // On génère l'URL avec l'ID de l'utilisateur
+                    header("Location: dash.php?id=" . $user_id);
+                     
+                    exit(); 
                 } else {
-                    // Si l'utilisateur n'a pas le rôle d'auteur
+                   
                     $erreurs['role'] = "Vous n'avez pas le rôle d'auteur.";
                 }
                 break;
             } else {
-                // Mot de passe invalide
+              
                 $erreurs['password'] = "Mot de passe invalide";
                 break;
             }
         }
     }
 
-    // Si le nom d'utilisateur n'a pas été trouvé
+  
     if (!$utilisateur_trouve) {
         $erreurs['username'] = "Le nom d'utilisateur n'existe pas";
     }
@@ -208,3 +225,6 @@ if (isset($_POST['connecter'])) {
     </main> 
 </body>
 </html>
+<!-- SELECT articles.id, utilisateurs.nom
+FROM articles
+JOIN utilisateurs ON articles.id = utilisateurs.id; -->

@@ -1,22 +1,72 @@
 <?php
-echo " hello meriem"; 
+session_start();
+// echo " hello meriem"; 
 
 
-$sql="insert into' nom de table'(name,email,mobile,password) values('$name','$email',$mobile','$password')";
+// $sql="insert into' nom de table'(name,email,mobile,password) values('$name','$email',$mobile','$password')";
 
-$result=mysqli_query($connect,$sql);
-if($result){
-    echo"data inserted succefly";
-    header('location:dash.php');
+// $result=mysqli_query($connect,$sql);
+// if($result){
+//     echo"data inserted succefly";
+//     header('location:dash.php');
 
-}
-else{
-  echo 'Connection error: ' . mysqli_connect_error();
-}
+// }
+// else{
+//   echo 'Connection error: ' . mysqli_connect_error();
+// }
 
 
 
 //  (div class container button)
+
+$connect = mysqli_connect('localhost', 'root', '', 'blogpress');
+if (!$connect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+$titre="";
+$contenu="";
+$erreurs=["titre"=>"","contenu"=>""];
+
+
+
+if(isset($_POST['submit'])){
+    echo"hello";
+$titre=$_POST['titre'];
+    $contenu=$_POST['contenu'];
+echo  $titre;
+echo  $contenu;
+if(empty($titre)){
+   $erreurs['titre']=" invalid ";
+}
+else{
+
+}
+  
+    if(empty($contenu)){
+        $erreurs['contenu']="yuk";
+    }
+    else{
+
+    }
+    if(empty($erreurs['titre']) &&empty($erreurs['contenu)'])){
+        $sql = "INSERT INTO articles(titre, contenu) VALUES ('$titre', '$contenu')";
+
+        // Exécution de la requête
+        if (mysqli_query($connect, $sql)) {
+            echo "L'utilisateur a été ajouté avec succès.";
+        } else {
+            echo "Erreur : " . mysqli_error($connect);
+        }
+    }
+
+
+
+
+
+
+}
+
 
 
 
@@ -58,11 +108,10 @@ else{
     <title>Document</title>
     <style>
         .btnss{
-            background-color: #333;
+          
             display: flex;
-            flex-wrap: wrapp;
-            justify-content: center;
-            align-items:  center;
+         
+         
             gap:30px;
         }
 
@@ -276,61 +325,27 @@ main {
 
 
   
-    <div class="btnss">
+  
    <h2>Gestion des Articles</h2>
+     <div class="btnss">
     <div >
         <button class="btn" id="add">Ajouter un nouvel article</button>
 
         <!-- Formulaire caché par défaut -->
-        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
+        <form action="newarticle.php" id="form" method="POST" style="display:none; margin-top: 20px;">
             <label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" required><br><br>
+            <input type="text" id="titre" name="titre" ><br><br>
+            <div class="erreurs"><?php    echo $erreurs['titre']?></div>
 
             <label for="contenu">Contenu :</label>
-            <textarea id="contenu" name="contenu" required></textarea><br><br>
+            <textarea id="contenu" name="contenu" ></textarea><br><br>
+            <div class="erreurs"><?php    echo $erreurs['contenu']?></div>
 
-            <label for="auteur">Auteur :</label>
-            <input type="text" id="auteur" name="auteur" required><br><br>
-
-            <input type="submit" value="Ajouter l'article">
+<button  name="submit"> add your article</button>
         </form>
     </div>
-    <!-- modifier -->
-    <div >
-        <button class="btn" id="add">Ajouter un nouvel article</button>
-
-        <!-- Formulaire caché par défaut -->
-        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
-            <label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" required><br><br>
-
-            <label for="contenu">Contenu :</label>
-            <textarea id="contenu" name="contenu" required></textarea><br><br>
-
-            <label for="auteur">Auteur :</label>
-            <input type="text" id="auteur" name="auteur" required><br><br>
-
-            <input type="submit" value="Ajouter l'article">
-        </form>
-    </div>
-    <!-- returee -->
-    <div >
-        <button class="btn" id="add">Ajouter un nouvel article</button>
-
-        <!-- Formulaire caché par défaut -->
-        <form action="ajouter_article.php" id="form" method="POST" style="display:none; margin-top: 20px;">
-            <label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" required><br><br>
-
-            <label for="contenu">Contenu :</label>
-            <textarea id="contenu" name="contenu" required></textarea><br><br>
-
-            <label for="auteur">Auteur :</label>
-            <input type="text" id="auteur" name="auteur" required><br><br>
-
-            <input type="submit" value="Ajouter l'article">
-        </form>
-    </div>
+ 
+   
    </div>
     
 
@@ -352,36 +367,34 @@ main {
             </tr>
         </thead>
         <tbody>
-            <?php
-          if($result){
-            while(  $utilisateurs = mysqli_fetch_all($result, MYSQLI_ASSOC)){
- echo'   <tr>
-               <td> '.$id.'</td>
-                <td>'.$name.'</td>
-               <td>'.$mobile.'</td>
-             <td>Cellule 1,2</td>
-             <td>
-           <button><a href="">modifier</a></button>
-           <button><a href="">suprrimer</a></button>
-          </td>
-             </tr>';
-            }
+            <!-- <?php
+//           if($result){
+//             while(  $utilisateurs = mysqli_fetch_all($result, MYSQLI_ASSOC)){
+//  echo'   <tr>
+//                <td> '.$id.'</td>
+//                 <td>'.$name.'</td>
+//                <td>'.$mobile.'</td>
+//              <td>Cellule 1,2</td>
+//              <td>
+//            <button><a href="">modifier</a></button>
+//            <button><a href="">suprrimer</a></button>
+//           </td>
+//              </tr>';
+//             }
 
-            }
+//             }
           
 
         
 
 
           
-            ?>
-            <button><a href="">modifier</a></button>
+            ?> -->
+          
         </tbody>
     </table>
 </section>
-<div class="container">
-    <button><a href="ulien formule"> add users</a> </button>
-</div>
+
 
 <script>
     // Récupérer les éléments du DOM
