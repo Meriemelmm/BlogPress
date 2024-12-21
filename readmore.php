@@ -6,13 +6,44 @@ $affiche="SELECT  articles.titre, articles.contenu, articles.likes, articles.vie
 $afficheQuery=mysqli_query($connect,$affiche);
 
 
-
+// views   --------------------------------------------------------------------------------------------------
 
 $views="UPDATE   articles SET views=views+1 where id_article='$readArticle' ";
 $viewsQuery=mysqli_query($connect,$views);
-echo "hello views:".$viewsQuery;
+// likes----------------------------------------------------------------------------------------------------
+if(isset($_POST['like'])){
+   $likes="UPDATE articles SET  likes=likes+1 where id_article='$readArticle'";
+   $likesQuery=mysqli_query($connect,$likes);
+}
 
-$affichefetch=mysqli_fetch_assoc($afficheQuery)
+
+$affichefetch=mysqli_fetch_assoc($afficheQuery);
+//  les commontaires ------------------------------------------------
+if(isset($_POST['envoyer'])){
+    $comment = $_POST['commentaire']; 
+    $commentaire = "INSERT INTO commontaires (content, id_article) 
+    VALUES ('$comment', '$readArticle')";
+
+// Exécution de la requête
+$commentaireQuery = mysqli_query($connect, $commentaire);
+
+// Vérification si l'insertion a réussi
+if ($commentaireQuery) {
+echo "Commentaire ajouté avec succès !";
+} else {
+echo "Erreur lors de l'ajout du commentaire.";
+}
+}
+$afichecommont = "
+    SELECT commontaires.content, articles.id
+    FROM commontaires 
+    JOIN articles ON commontaires.id_article = articles.id 
+    WHERE articles.id = '$readArticle'
+";
+
+// Exécuter la requête
+$afichecommontQuery = mysqli_query($connect, $afichecommont);
+
 
 ?>
 <!DOCTYPE html>
@@ -28,6 +59,10 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery)
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+}
+
+.article-content{
+    line-break: anywhere;
 }
 
 .article-container {
@@ -52,7 +87,9 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery)
 .article-content {
     font-size: 1.1em;
     margin-bottom: 30px;
+    line-break: anywhere;
 }
+
 
 .interactions {
     margin-bottom: 20px;
@@ -93,14 +130,40 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery)
 .comment-form button:hover {
     background-color: #121125;
 }
+.custom-button {
+    background-color:  #121125; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    font-size: 16px; /* Taille du texte */
+    padding: 12px 24px; /* Espacement intérieur du bouton */
+    border: none; /* Retirer les bordures */
+    border-radius: 8px; /* Coins arrondis */
+    cursor: pointer; /* Changer le curseur en main quand on survole */
+    /* margin:; */
+  
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+}
+
+
+
 
     </style>
 </head>
 <body>
-    <?php
+<a href="index.php">
+    <button class="custom-button">Retour</button>
+</a>
+ <?php
     
 
-        echo"  <div class='article-container'>
+        echo" 
+        <div class='article-container'>
         <!-- Titre de l'article -->
         <h1 class='article-title'>" . $affichefetch['titre'] . "</h1>
         
@@ -120,25 +183,46 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery)
         
         <!-- Informations sur les interactions -->
         <div class='interactions'>
-            <p><strong>Likes :</strong> " . $affichefetch['likes'] . "</p>
+        <div style='display:flex; gap:20px'>
+    <p><strong>Likes :</strong>  " . $affichefetch['likes'] . " </p><form action='' method='POST'>
+         <button class='like-button' style=' /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  font-size: 20px;
+  margin-top:5px;
+ /* Taille du texte */
+  /* Espacement autour du texte */
+  border: none; /* Retirer les bordures */
+  border-radius: 5px; /* Coins arrondis */
+  cursor: pointer; /* Changer le curseur en main */
+ /* Effet de transition */' name='like'>👍  </button>
+    
+    </form></div>
+       
+           
             <p><strong>Vues :</strong> " . $affichefetch['views'] . "</p>
-        </div>
-
-        <!-- Section des commentaires -->
+        </div>";
+        while($fetchcommnt=mysqli_fetch_assoc($afichecommontQuery)){ echo"    <!-- Section des commentaires -->
         <div class='comments-section'>
             <h3>Commentaires</h3>
             <div class='comment'>
-                <p><strong>Marie L.</strong> : Très bon article, j'ai appris beaucoup de choses !</p>
+                <p><strong>Marie L.</strong> 
+                 " .$fetchcommnt ['content']. "
+</p>
             </div>
             <div class='comment'>
                 <p><strong>Paul G.</strong> : Je suis d'accord, mais il manque quelques informations.</p>
-            </div>
-            <form class='comment-form'>
-                <textarea placeholder='Ajouter un commentaire...' ></textarea><br>
-                <button type='submit'>Envoyer</button>
+            </div> <form class='comment-form' method='POST'>
+                <textarea placeholder='Ajouter un commentaire...'  name='commentaire'  required></textarea><br>
+                <button type='submit' name='envoyer'>Envoyer</button>
             </form>
         </div>
     </div>";
+}
+
+   
+
+
+
         
      
     
@@ -147,6 +231,11 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery)
     
     
     ?>
+ 
+            
+ 
+    
+
     
 </body>
 </html>

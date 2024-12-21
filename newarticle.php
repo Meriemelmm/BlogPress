@@ -89,9 +89,10 @@ if (isset($_POST['submit'])) {
         .btnss {
 
             display: flex;
+            flex-direction: column;
 
 
-            gap: 30px;
+            gap: 10px;
         }
 
         /* Ajouter du style pour que le formulaire s'affiche proprement */
@@ -204,8 +205,12 @@ if (isset($_POST['submit'])) {
 
 
     <h2>DASHBOARD</h2>
+
     <div class="btnss">
+    <a href="index.php"> <button> retour</button></a>
         <div>
+       
+         
             <button class="btn" id="add">Ajouter un nouvel article</button>
 
             <!-- Formulaire caché par défaut -->
@@ -263,6 +268,44 @@ if (isset($_POST['submit'])) {
                                 <td>
                                     <a href='modifier.php?editedid={$fetched['id_article']}'><button>Modifier</button></a>
                                     <a href='delette.php?deletedid={$fetched['id_article']}'> <button>Supprimer</button></a>
+                                </td>
+                            </tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
+    </section>
+    <!-- commontaire -->
+    <section class="article-management">
+        <h2>commontaire management</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>commontaire</th>
+                    <th>id_article</th>
+                     <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sql = "SELECT * FROM articles WHERE id = {$_SESSION['id']}";
+                $result = mysqli_query($connect, $sql);
+
+                if ($result) {
+                    while ($fetched = mysqli_fetch_assoc($result)) {
+                        echo "
+                            <tr>
+                                <td>" . $fetched['id_article'] . "</td>
+                                <td>" . $fetched['titre'] . "</td>
+                                <td>" . substr($fetched['contenu'],0,100)  . "</td>
+
+                               <td>" . $fetched['id_article'] . "</td>
+                                <td>
+                         <a href='delette.php?deletedid={$fetched['id_article']}'> <button>Supprimer</button></a>
                                 </td>
                             </tr>";
                     }

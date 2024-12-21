@@ -1,5 +1,6 @@
 <?php
 
+
 $connect = mysqli_connect('localhost', 'root', '', 'blogpress');
 
 $affichage = "SELECT id_article, articles.titre, articles.contenu,articles.views,articles.likes,articles.date_creation, utilisateurs.username  from articles join utilisateurs on utilisateurs.id = articles.id where role = 'auteur'";
