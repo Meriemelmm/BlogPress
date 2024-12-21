@@ -257,6 +257,7 @@ if (isset($_POST['submit'])) {
 
                 if ($result) {
                     while ($fetched = mysqli_fetch_assoc($result)) {
+                       
                         echo "
                             <tr>
                                 <td>" . $fetched['id_article'] . "</td>

@@ -141,9 +141,11 @@ $affichageQuery = mysqli_query($connect, $affichage);
     <section class="articles-list">
         <?php
             while($affichageFetch = mysqli_fetch_assoc($affichageQuery)){
+
+    
                 echo"
                 <article class='article-card'>
-            <img src='https://via.placeholder.com/300x200' alt='Image de l'article'>
+            <img src='https://i.pinimg.com/736x/e0/b1/a2/e0b1a2712b8a6bfad41e69a002dcec76.jpg' alt='Image de l'article'>
             <div class='article-content'>
                 <h2>" . $affichageFetch['titre'] . "</h2>
                 <p class='article-excerpt'>" . substr($affichageFetch['contenu'],0,100)  . "</p>
@@ -151,7 +153,7 @@ $affichageQuery = mysqli_query($connect, $affichage);
                 <div class='article-stats'>
                     <span>Vues:".$affichageFetch['views'] . "</span> | <span>likes:" . $affichageFetch['likes'] . " </span>
                 </div>
-                <a href='readmore.php?readmoreid={$affichageFetch['id_article']}' class='read-more'>Lire plus</a>
+                <a href='views.php?readmoreid={$affichageFetch['id_article']}' class='read-more'>Lire plus</a>
             </div>
         </article>
                 ";

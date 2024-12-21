@@ -1,6 +1,6 @@
 <?php
 include'confg.php';
-$readArticle = $_GET['readmoreid'];
+$readArticle = $_GET['id'];
 echo $readArticle;
 $affiche="SELECT  articles.titre, articles.contenu, articles.likes, articles.views,  articles.date_creation,utilisateurs.username FROM articles JOIN utilisateurs ON articles.id=utilisateurs.id WHERE id_article='$readArticle'";
 $afficheQuery=mysqli_query($connect,$affiche);
@@ -8,8 +8,8 @@ $afficheQuery=mysqli_query($connect,$affiche);
 
 // views   --------------------------------------------------------------------------------------------------
 
-$views="UPDATE   articles SET views=views+1 where id_article='$readArticle' ";
-$viewsQuery=mysqli_query($connect,$views);
+// $views="UPDATE   articles SET views=views+1 where id_article='$readArticle' ";
+// $viewsQuery=mysqli_query($connect,$views);
 // likes----------------------------------------------------------------------------------------------------
 if(isset($_POST['like'])){
    $likes="UPDATE articles SET  likes=likes+1 where id_article='$readArticle'";
