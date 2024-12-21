@@ -21,8 +21,10 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery);
 //  les commontaires ------------------------------------------------
 if(isset($_POST['envoyer'])){
     $comment = $_POST['commentaire']; 
+     echo  $comment;
     $commentaire = "INSERT INTO commontaires (content, id_article) 
     VALUES ('$comment', '$readArticle')";
+   
 
 // Exécution de la requête
 $commentaireQuery = mysqli_query($connect, $commentaire);
@@ -43,6 +45,7 @@ $afichecommont = "
 
 // Exécuter la requête
 $afichecommontQuery = mysqli_query($connect, $afichecommont);
+   $fetchcommnt=mysqli_fetch_assoc($afichecommontQuery);
 
 
 ?>
@@ -200,13 +203,13 @@ p {
        
            
             <p><strong>Vues :</strong> " . $affichefetch['views'] . "</p>
-        </div>";
-        while($fetchcommnt=mysqli_fetch_assoc($afichecommontQuery)){ echo"    <!-- Section des commentaires -->
+        </div>
+        <!-- Section des commentaires -->
         <div class='comments-section'>
             <h3>Commentaires</h3>
             <div class='comment'>
                 <p><strong>Marie L.</strong> 
-                 " .$fetchcommnt ['content']. "
+                
 </p>
             </div>
             <div class='comment'>
@@ -217,7 +220,7 @@ p {
             </form>
         </div>
     </div>";
-}
+
 
    
 
