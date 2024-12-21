@@ -1,7 +1,8 @@
 <?php
+
 $connect = mysqli_connect('localhost', 'root', '', 'blogpress');
 
-$affichage = "SELECT articles.titre, articles.contenu,articles.views,articles.likes,articles.date_creation, utilisateurs.username  from articles join utilisateurs on utilisateurs.id = articles.id where role = 'auteur'";
+$affichage = "SELECT id_article, articles.titre, articles.contenu,articles.views,articles.likes,articles.date_creation, utilisateurs.username  from articles join utilisateurs on utilisateurs.id = articles.id where role = 'auteur'";
 $affichageQuery = mysqli_query($connect, $affichage);
 
 
@@ -143,12 +144,13 @@ $affichageQuery = mysqli_query($connect, $affichage);
                 <article class='article-card'>
             <img src='https://via.placeholder.com/300x200' alt='Image de l'article'>
             <div class='article-content'>
-                <h2>Titre de l'article</h2>
-                <p class="article-excerpt">Ceci est un extrait de l'article pour donner un aperçu du contenu...</p>
-                <div class="article-stats">
-                    <span>Vues: 120</span> | <span>Commentaires: 5</span>
+                <h2>" . $affichageFetch['titre'] . "</h2>
+                <p class='article-excerpt'>" . substr($affichageFetch['contenu'],0,100)  . "</p>
+                <p>   " . $affichageFetch['username'] . "  </p>
+                <div class='article-stats'>
+                    <span>Vues:".$affichageFetch['views'] . "</span> | <span>likes:" . $affichageFetch['likes'] . " </span>
                 </div>
-                <a href="article.html" class="read-more">Lire plus</a>
+                <a href='readmore.php?readmoreid={$affichageFetch['id_article']}' class='read-more'>Lire plus</a>
             </div>
         </article>
                 ";
