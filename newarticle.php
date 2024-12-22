@@ -90,14 +90,14 @@ $showcommQuery=mysqli_query($connect,$showcomm);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
+    <style>*{
+        box-sizing: border-box;
+    }
         .btnss {
 
             display: flex;
-            flex-direction: column;
-
-
-            gap: 10px;
+    justify-content: space-between;
+    padding: 20px;
         }
 
         /* Ajouter du style pour que le formulaire s'affiche proprement */
@@ -185,7 +185,7 @@ $showcommQuery=mysqli_query($connect,$showcomm);
         }
 
         button {
-            padding: 8px 16px;
+            padding: 8px 36px;
             background-color: #3498db;
             color: white;
             border: none;
@@ -195,12 +195,19 @@ $showcommQuery=mysqli_query($connect,$showcomm);
             cursor: pointer;
         }
 
-        h2 {
+        .dashboard-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    background-color:  #121125;
+    color: white;
+    margin-top: 20px;
+  
+}
+     
 
-            display: inline;
-            margin-left: 20px;
-
-        }
     </style>
 
 </head>
@@ -211,10 +218,11 @@ $showcommQuery=mysqli_query($connect,$showcomm);
 
 
 
-    <h2>DASHBOARD</h2>
+<h2 class="dashboard-header">DASHBOARD</h2>
+
 
     <div class="btnss">
-    <a href="index.php"> <button> retour</button></a>
+
         <div>
        
          
@@ -235,7 +243,7 @@ $showcommQuery=mysqli_query($connect,$showcomm);
             </form>
         </div>
 
-
+    <a href="index.php"> <button> retour</button></a>
     </div>
 
 
