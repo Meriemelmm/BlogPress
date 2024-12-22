@@ -69,7 +69,7 @@ if (isset($_POST['Update'])) {
         .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #121125;
             color: white;
             border: none;
             cursor: pointer;
@@ -78,7 +78,7 @@ if (isset($_POST['Update'])) {
         }
 
         .form-container button:hover {
-            background-color: #45a049;
+            background-color: #121125;
         }
 
         .form-container .back-link {
@@ -87,7 +87,7 @@ if (isset($_POST['Update'])) {
         }
 
         .form-container .back-link a {
-            color: #4CAF50;
+            color: #121125;
             text-decoration: none;
         }
     </style>

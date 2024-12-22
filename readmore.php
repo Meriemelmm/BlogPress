@@ -1,8 +1,9 @@
 <?php
 include'confg.php';
 $readArticle = $_GET['id'];
+session_start();
 echo $readArticle;
-$affiche="SELECT  articles.titre, articles.contenu, articles.likes, articles.views,  articles.date_creation,utilisateurs.username FROM articles JOIN utilisateurs ON articles.id=utilisateurs.id WHERE id_article='$readArticle'";
+$affiche="SELECT  articles.titre, articles.contenu, articles.likes, articles.views,  articles.date_creation,utilisateurs.username ,utilisateurs.id FROM articles JOIN utilisateurs ON articles.id=utilisateurs.id WHERE id_article='$readArticle'  ";
 $afficheQuery=mysqli_query($connect,$affiche);
 
 
@@ -22,8 +23,10 @@ $affichefetch=mysqli_fetch_assoc($afficheQuery);
 if(isset($_POST['envoyer'])){
     $comment = $_POST['commentaire']; 
      echo  $comment;
-    $commentaire = "INSERT INTO commontaires (content, id_article) 
-    VALUES ('$comment', '$readArticle')";
+    $commentaire = "INSERT INTO commontaires (content, id_article,id) 
+    VALUES ('$comment', '$readArticle', '{$affichefetch['id']}')";
+    
+    
    
 
 // Exécution de la requête
@@ -32,20 +35,24 @@ $commentaireQuery = mysqli_query($connect, $commentaire);
 // Vérification si l'insertion a réussi
 if ($commentaireQuery) {
 echo "Commentaire ajouté avec succès !";
+
 } else {
 echo "Erreur lors de l'ajout du commentaire.";
 }
 }
+// -------------------- end de ajouter les commentaire
+
+// ///////////////////////// afiche les commentaires 
 $afichecommont = "
-    SELECT commontaires.content, articles.id
+    SELECT commontaires.content
     FROM commontaires 
-    JOIN articles ON commontaires.id_article = articles.id 
-    WHERE articles.id = '$readArticle'
-";
+    JOIN articles ON commontaires.id_article = articles.id_article
+    JOIN utilisateurs ON commontaires.id = utilisateurs.id
+    WHERE articles.id_article = '$readArticle'";
 
 // Exécuter la requête
 $afichecommontQuery = mysqli_query($connect, $afichecommont);
-   $fetchcommnt=mysqli_fetch_assoc($afichecommontQuery);
+  
 
 
 ?>
@@ -202,19 +209,16 @@ p {
     </form></div>
        
            
-            <p><strong>Vues :</strong> " . $affichefetch['views'] . "</p>
-        </div>
-        <!-- Section des commentaires -->
-        <div class='comments-section'>
-            <h3>Commentaires</h3>
-            <div class='comment'>
-                <p><strong>Marie L.</strong> 
-                
-</p>
-            </div>
-            <div class='comment'>
-                <p><strong>Paul G.</strong> : Je suis d'accord, mais il manque quelques informations.</p>
-            </div> <form class='comment-form' method='POST'>
+            <p><strong>Vues :</strong> " .$affichefetch['views'] . "</p>
+        </div>";
+            while ($fetchcommnt = mysqli_fetch_assoc($afichecommontQuery)) {
+                echo "
+                    <!-- Commentaire -->
+                    <div class='comment'>
+                        <p><strong>auteur:</strong>: " . htmlspecialchars($fetchcommnt['content']) . "</p>
+                    </div>";
+            }
+                 echo" <form class='comment-form' method='POST'>
                 <textarea placeholder='Ajouter un commentaire...'  name='commentaire'  required></textarea><br>
                 <button type='submit' name='envoyer'>Envoyer</button>
             </form>

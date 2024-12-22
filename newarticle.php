@@ -44,6 +44,11 @@ if (isset($_POST['submit'])) {
         }
     }
 }
+//  les commontaires 
+$showcomm="SELECT commontaires.content,commontaires.date_comment,articles.id_article,utilisateurs.id,
+commontaires.id_commontaire 
+FROM  commontaires JOIN articles ON commontaires.id_article=articles.id_article JOIn utilisateurs ON commontaires.id=utilisateurs.id WHERE utilisateurs.id={$_SESSION['id']}";
+$showcommQuery=mysqli_query($connect,$showcomm);
 
 
 
@@ -97,11 +102,13 @@ if (isset($_POST['submit'])) {
 
         /* Ajouter du style pour que le formulaire s'affiche proprement */
         form {
-            margin-top: 20px;
+            width: 80%;
+            margin: 50px auto;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color:white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           
             position: absolute;
         }
 
@@ -277,14 +284,19 @@ if (isset($_POST['submit'])) {
             </tbody>
         </table>
     </section>
+
+<!-- Oui, cette version simplifiée de la blague est parfaitement adaptée pour LinkedIn ! Elle est légère, amusante et professionnelle, tout en étant facile à comprendre. Voici comment vous pourriez la présenter dans un post LinkedIn :
+Pourquoi SQL est-il le meilleur ami des développeurs ?
+
+Parce qu'il sait toujours comment "choisir" les bonnes réponses ! 😄 -->
     <!-- commontaire -->
     <section class="article-management">
-        <h2>commontaire management</h2>
+        <h2>commentaire management</h2>
 
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>ID de commont</th>
                     <th>commontaire</th>
                     <th>id_article</th>
                      <th>Created</th>
@@ -293,24 +305,23 @@ if (isset($_POST['submit'])) {
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * FROM articles WHERE id = {$_SESSION['id']}";
-                $result = mysqli_query($connect, $sql);
+               
 
-                if ($result) {
-                    while ($fetched = mysqli_fetch_assoc($result)) {
+              
+                    while ($showcommfetch=mysqli_fetch_assoc($showcommQuery)) {
                         echo "
                             <tr>
-                                <td>" . $fetched['id_article'] . "</td>
-                                <td>" . $fetched['titre'] . "</td>
-                                <td>" . substr($fetched['contenu'],0,100)  . "</td>
-
-                               <td>" . $fetched['id_article'] . "</td>
+                                <td>" . $showcommfetch['id_commontaire'] . "</td>
+                              
+                                <td>" . substr($showcommfetch['content'],0,100)  . "</td>
+                                  <td>" .$showcommfetch['id_article'] . "</td>
+                               <td>" . $showcommfetch['date_comment'] . "</td>
                                 <td>
-                         <a href='delette.php?deletedid={$fetched['id_article']}'> <button>Supprimer</button></a>
+                         <a href='detet.php?removedid={$showcommfetch['id_commontaire']}'> <button>Supprimer</button></a>
                                 </td>
                             </tr>";
                     }
-                }
+                
                 ?>
             </tbody>
         </table>
