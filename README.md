@@ -38,7 +38,7 @@ Voici la version sans la section **Bonus** :
 - **🔑 Authentification des utilisateurs** avec gestion des rôles.  
 - **📊 Système de statistiques** pour suivre la performance des articles.  
 - **📈 Intégration de **Chart.js** pour la visualisation des données.  
-- **🔒 Sécurisation des données utilisateurs** et des informations sensibles.
+
 - --------------------------------------------------------------------------------------------------------------------
 
 ### **🛠️ Technologies utilisées :**
